@@ -71,8 +71,18 @@ public class ConnectionListener implements
         HealthPermissionManager pmsManager = new HealthPermissionManager(mModule.getStore());
 
         mKeySet = new HashSet<PermissionKey>();
-        //mKeySet.add(new PermissionKey(HealthConstants.StepCount.HEALTH_DATA_TYPE, PermissionType.READ));
-        mKeySet.add(new PermissionKey(SamsungHealthModule.STEP_DAILY_TREND_TYPE, PermissionType.READ));
+        mKeySet.add(new PermissionKey(HealthConstants.Weight.HEALTH_DATA_TYPE, PermissionType.READ));
+        //mKeySet.add(new PermissionKey(SamsungHealthModule.STEP_DAILY_TREND_TYPE, PermissionType.READ));
+        mKeySet.add(new PermissionKey(HealthConstants.BloodPressure.HEALTH_DATA_TYPE, HealthPermissionManager.PermissionType.READ));
+        mKeySet.add(new PermissionKey(HealthConstants.BloodGlucose.HEALTH_DATA_TYPE, HealthPermissionManager.PermissionType.READ));
+        mKeySet.add(new PermissionKey(HealthConstants.BodyFat.HEALTH_DATA_TYPE, HealthPermissionManager.PermissionType.READ));
+        mKeySet.add(new PermissionKey(HealthConstants.BodyMuscle.HEALTH_DATA_TYPE, HealthPermissionManager.PermissionType.READ));
+        mKeySet.add(new PermissionKey(HealthConstants.Electrocardiogram.HEALTH_DATA_TYPE, HealthPermissionManager.PermissionType.READ));
+        mKeySet.add(new PermissionKey(HealthConstants.HeartRate.HEALTH_DATA_TYPE, HealthPermissionManager.PermissionType.READ));
+        mKeySet.add(new PermissionKey(HealthConstants.OxygenSaturation.HEALTH_DATA_TYPE, HealthPermissionManager.PermissionType.READ));
+        mKeySet.add(new PermissionKey(HealthConstants.StepCount.HEALTH_DATA_TYPE, HealthPermissionManager.PermissionType.READ));
+        mKeySet.add(new PermissionKey(HealthConstants.Sleep.HEALTH_DATA_TYPE, HealthPermissionManager.PermissionType.READ));
+        mKeySet.add(new PermissionKey(HealthConstants.SleepStage.HEALTH_DATA_TYPE, HealthPermissionManager.PermissionType.READ));
 
         try {
             // Check whether the permissions that this application needs are acquired
