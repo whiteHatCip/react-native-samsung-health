@@ -4,7 +4,7 @@ React Native bridge module for interacting with Samsung Health
 ## Installing it as a library in your main project
 There are many ways to do this:
 
-1. Do `npm install --save git+https://github.com/cellihealth/react-native-samsung-health.git` in your main project.
+1. Do `npm install --save git+http://gitlab.synclab.it/ios/react-native-samsungHealth.git` in your main project.
 2. Link the library:
     * Add the following to `android/settings.gradle`:
         ```
