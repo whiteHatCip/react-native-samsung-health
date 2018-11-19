@@ -100,17 +100,14 @@ class RNSamsungHealth {
       results = {}
       for(var step of steps) {
           var date = step.start_time !== undefined ? new Date(step.start_time) : new Date(step.day_time);
+          date = date.toUTCString();
+          date = date.split(' ').slice(0, 4).join(' ');
 
-          var day = ("0" + date.getDate()).slice(-2);
-          var month = ("0" + (date.getMonth()+1)).slice(-2);
-          var year = date.getFullYear();
-          var dateFormatted = year + "-" + month + "-" + day;
-
-          if (!(dateFormatted in results)) {
-              results[dateFormatted] = 0;
+          if (!(date in results)) {
+              results[date] = 0;
           }
 
-          results[dateFormatted] += step.count;
+          results[date] += step.count;
       }
 
       results2 = [];
