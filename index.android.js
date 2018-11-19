@@ -27,10 +27,10 @@ class RNSamsungHealth {
     let endDate = options.endDate != undefined ? Date.parse(options.endDate) : (new Date()).valueOf();
     let mergeData = options.mergeData != undefined ? options.mergeData : true;
 
-    //console.log("startDate:" + startDate);
-    //console.log("endDate:" + endDate);
-    //console.log("startDate2:" + (new Date(startDate)).toLocaleString());
-    //console.log("endDate2:" + (new Date(endDate)).toLocaleString());
+    // console.log("startDate:" + startDate);
+    // console.log("endDate:" + endDate);
+    // console.log("startDate2:" + (new Date(startDate)).toLocaleString());
+    // console.log("endDate2:" + (new Date(endDate)).toLocaleString());
 
     samsungHealth.readStepCount(startDate, endDate,
       (msg) => { callback(msg, false); },
@@ -39,16 +39,51 @@ class RNSamsungHealth {
               var resData = res.map(function(dev) {
                   var obj = {};
                   obj.source = dev.source.name;
-                  obj.steps = this.buildDailySteps(dev.steps);
+                  obj.values = this.buildDailySteps(dev.steps);
                   obj.sourceDetail = dev.source;
                   return obj;
                 }, this);
-
-              if (mergeData) resData = this.mergeResult(resData);
-
+              if (mergeData) {
+                resData = this.mergeResult(resData);
+                console.log(resData);
+              }
               callback(false, resData);
           } else {
               callback("There is no any steps data for this period", false);
+          }
+      }
+    );
+  }
+
+  getBloodGlucoseSamples(options, callback) {
+    console.log("getBloodGlucose");
+
+    let startDate = options.startDate != undefined ? Date.parse(options.startDate) : (new Date()).setHours(0,0,0,0);
+    let endDate = options.endDate != undefined ? Date.parse(options.endDate) : (new Date()).valueOf();
+    let mergeData = options.mergeData != undefined ? options.mergeData : true;
+
+    samsungHealth.readBloodGlucose(startDate, endDate,
+      (msg) => { callback(msg, false); },
+      (res) => {
+          console.log(res);
+          if (res.length>0) {
+              var resData = res.map((dev) =>  {
+                  var obj = {};
+                  var values = [];
+                  console.log(dev);
+                  obj.source = dev.source.name;
+                  obj.sourceDetail = dev.source;
+                  for(var val of dev.bloodGlucose) {
+                  values.push({ value: val.glucose, start_time: val.start_time });
+                  }
+                  obj.values = values;
+                  console.log(obj);
+                  return obj;
+                }, this);
+                console.log("risultato della lettura della glicemia");
+              callback(false, resData);
+          } else {
+              callback("There is no any blood glucose data for this period", false);
           }
       }
     );

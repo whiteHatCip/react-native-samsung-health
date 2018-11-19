@@ -57,7 +57,6 @@ public class SamsungHealthModule extends ReactContextBaseJavaModule implements
     private static final String DURATION_SHORT_KEY = "SHORT";
     private static final String DURATION_LONG_KEY = "LONG";
 
-    public static final String STEP_DAILY_TREND_TYPE = "com.samsung.shealth.step_daily_trend";
     public static final String DAY_TIME = "day_time";
 
     private HealthDataStore mStore;
@@ -174,30 +173,18 @@ public class SamsungHealthModule extends ReactContextBaseJavaModule implements
         Log.d(REACT_MODULE, "startDate:" + Long.toString((long)startDate));
         Log.d(REACT_MODULE, "endDate:" + Long.toString((long)endDate));
 
-        /*
+
         Filter filter = Filter.and(
             Filter.greaterThanEquals(HealthConstants.StepCount.START_TIME, (long)startDate),
             Filter.lessThanEquals(HealthConstants.StepCount.START_TIME, (long)endDate)
         );
-        */
-        Filter filter = Filter.and(
-            Filter.greaterThanEquals(SamsungHealthModule.DAY_TIME, (long)startDate),
-            Filter.lessThanEquals(SamsungHealthModule.DAY_TIME, (long)endDate)
-        );
+
         HealthDataResolver.ReadRequest request = new ReadRequest.Builder()
-                /*
-                .setDataType(HealthConstants.StepCount.HEALTH_DATA_TYPE) //  "com.samsung.health.step_count"
+                .setDataType(HealthConstants.StepCount.HEALTH_DATA_TYPE) // "com.samsung.shealth.step_daily_trend"
                 .setProperties(new String[]{
                         HealthConstants.StepCount.COUNT,       // "count"
-                        HealthConstants.StepCount.START_TIME,  // SessionMeasurement: "start_time"
-                        HealthConstants.StepCount.TIME_OFFSET, // SessionMeasurement: "time_offset"
-                        HealthConstants.StepCount.DEVICE_UUID  // Common: "deviceuuid"
-                })
-                */
-                .setDataType(SamsungHealthModule.STEP_DAILY_TREND_TYPE) // "com.samsung.shealth.step_daily_trend"
-                .setProperties(new String[]{
-                        HealthConstants.StepCount.COUNT,       // "count"
-                        SamsungHealthModule.DAY_TIME,          // "day_time"
+                        HealthConstants.StepCount.START_TIME,  // "day_time"
+                        HealthConstants.StepCount.END_TIME,  // "end_time"
                         HealthConstants.StepCount.DEVICE_UUID  // Common: "deviceuuid"
                 })
                 .setFilter(filter)
@@ -209,6 +196,32 @@ public class SamsungHealthModule extends ReactContextBaseJavaModule implements
             Log.e(REACT_MODULE, e.getClass().getName() + " - " + e.getMessage());
             Log.e(REACT_MODULE, "Getting step count fails.");
             error.invoke("Getting step count fails.");
+        }
+    }
+
+    // Read the today's heart rate on demand
+    @ReactMethod
+    public void readBloodGlucose(double startDate, double endDate, Callback error, Callback success) {
+        HealthDataResolver resolver = new HealthDataResolver(mStore, null);
+
+        Log.d(REACT_MODULE, "startDate:" + Long.toString((long)startDate));
+
+        HealthDataResolver.ReadRequest request = new ReadRequest.Builder()
+
+                .setDataType(HealthConstants.BloodGlucose.HEALTH_DATA_TYPE) //  "com.samsung.health.heart_rate"
+                .setProperties(new String[]{
+                        HealthConstants.BloodGlucose.GLUCOSE,       // "count"
+                        HealthConstants.BloodGlucose.START_TIME,  // SessionMeasurement: "start_time"
+                        HealthConstants.BloodGlucose.DEVICE_UUID  // Common: "deviceuuid"
+                })
+                .build();
+
+        try {
+            resolver.read(request).setResultListener(new BloodGlucoseResultListener(this, error, success));
+        } catch (Exception e) {
+            Log.e(REACT_MODULE, e.getClass().getName() + " - " + e.getMessage());
+            Log.e(REACT_MODULE, "Getting blood glucose fails.");
+            error.invoke("Getting blood glucose fails.");
         }
     }
 }

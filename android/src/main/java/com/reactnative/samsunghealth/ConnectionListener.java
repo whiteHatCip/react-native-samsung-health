@@ -72,13 +72,14 @@ public class ConnectionListener implements
 
         mKeySet = new HashSet<PermissionKey>();
         mKeySet.add(new PermissionKey(HealthConstants.Weight.HEALTH_DATA_TYPE, PermissionType.READ));
-        //mKeySet.add(new PermissionKey(SamsungHealthModule.STEP_DAILY_TREND_TYPE, PermissionType.READ));
         mKeySet.add(new PermissionKey(HealthConstants.BloodPressure.HEALTH_DATA_TYPE, HealthPermissionManager.PermissionType.READ));
         mKeySet.add(new PermissionKey(HealthConstants.BloodGlucose.HEALTH_DATA_TYPE, HealthPermissionManager.PermissionType.READ));
+        mKeySet.add(new PermissionKey(HealthConstants.Weight.HEALTH_DATA_TYPE, PermissionType.READ));
         mKeySet.add(new PermissionKey(HealthConstants.BodyFat.HEALTH_DATA_TYPE, HealthPermissionManager.PermissionType.READ));
         mKeySet.add(new PermissionKey(HealthConstants.BodyMuscle.HEALTH_DATA_TYPE, HealthPermissionManager.PermissionType.READ));
         mKeySet.add(new PermissionKey(HealthConstants.Electrocardiogram.HEALTH_DATA_TYPE, HealthPermissionManager.PermissionType.READ));
         mKeySet.add(new PermissionKey(HealthConstants.HeartRate.HEALTH_DATA_TYPE, HealthPermissionManager.PermissionType.READ));
+        mKeySet.add(new PermissionKey(HealthConstants.HeartRate.HEALTH_DATA_TYPE, PermissionType.WRITE));
         mKeySet.add(new PermissionKey(HealthConstants.OxygenSaturation.HEALTH_DATA_TYPE, HealthPermissionManager.PermissionType.READ));
         mKeySet.add(new PermissionKey(HealthConstants.StepCount.HEALTH_DATA_TYPE, HealthPermissionManager.PermissionType.READ));
         mKeySet.add(new PermissionKey(HealthConstants.Sleep.HEALTH_DATA_TYPE, HealthPermissionManager.PermissionType.READ));
@@ -95,7 +96,7 @@ public class ConnectionListener implements
                 );
             } else {
                 // Get the current step count and display it
-                Log.d(REACT_MODULE, "COUNT THE STEPS!");
+                Log.d(REACT_MODULE, "Get the data!");
                 mSuccessCallback.invoke(true);
             }
         } catch (Exception e) {
