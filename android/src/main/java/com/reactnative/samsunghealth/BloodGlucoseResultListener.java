@@ -113,8 +113,7 @@ public class BloodGlucoseResultListener implements
 
                         col = c.getColumnIndex(HealthConstants.BloodGlucose.GLUCOSE);
                         if (col > -1) {
-                            map.putDouble(HealthConstants.BloodGlucose.GLUCOSE, (double) c.getLong(col)*18
-                            );
+                            map.putDouble(HealthConstants.BloodGlucose.GLUCOSE, (double) c.getLong(col));
                         }
 
                         /*

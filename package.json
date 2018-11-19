@@ -1,21 +1,54 @@
 {
-  "name": "react-native-samsung-health",
-  "version": "0.1.1",
-  "private": false,
-  "license": "Unlicense",
-  "main": "index.android.js",
-  "repository": {
+  "_args": [
+    [
+      "git+http://gitlab.synclab.it/ios/react-native-samsungHealth.git",
+      "/Users/fabiocipriani/Developer/Synclab/bda4phr/mobile/react-native/trunk"
+    ]
+  ],
+  "_from": "git+http://gitlab.synclab.it/ios/react-native-samsungHealth.git",
+  "_id": "react-native-samsung-health@git+http://gitlab.synclab.it/ios/react-native-samsungHealth.git#dbff273721ea8e28d7c52f609a9770ebd88a7327",
+  "_inBundle": false,
+  "_integrity": "",
+  "_location": "/react-native-samsung-health",
+  "_phantomChildren": {},
+  "_requested": {
     "type": "git",
-    "url": "https://github.com/cellihealth/react-native-samsung-health.git"
+    "raw": "git+http://gitlab.synclab.it/ios/react-native-samsungHealth.git",
+    "rawSpec": "git+http://gitlab.synclab.it/ios/react-native-samsungHealth.git",
+    "saveSpec": "git+http://gitlab.synclab.it/ios/react-native-samsungHealth.git",
+    "fetchSpec": "http://gitlab.synclab.it/ios/react-native-samsungHealth.git",
+    "gitCommittish": null
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "git+http://gitlab.synclab.it/ios/react-native-samsungHealth.git#dbff273721ea8e28d7c52f609a9770ebd88a7327",
+  "_spec": "git+http://gitlab.synclab.it/ios/react-native-samsungHealth.git",
+  "_where": "/Users/fabiocipriani/Developer/Synclab/bda4phr/mobile/react-native/trunk",
+  "author": {
+    "name": "Cellihealth Pte Ltd"
   },
+  "bugs": {
+    "url": "https://github.com/cellihealth/react-native-samsung-health/issues"
+  },
+  "description": "React Native bridge module for interacting with Samsung Health",
+  "homepage": "https://github.com/cellihealth/react-native-samsung-health#readme",
   "keywords": [
     "react-native",
     "samsung-health",
     "android",
     "library"
   ],
-  "author": "Cellihealth Pte Ltd"
+  "license": "Unlicense",
+  "main": "index.android.js",
+  "name": "react-native-samsung-health",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cellihealth/react-native-samsung-health.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "0.1.1"
 }

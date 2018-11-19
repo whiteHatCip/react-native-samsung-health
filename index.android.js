@@ -74,7 +74,7 @@ class RNSamsungHealth {
                   obj.source = dev.source.name;
                   obj.sourceDetail = dev.source;
                   for(var val of dev.bloodGlucose) {
-                  values.push({ value: val.glucose, start_time: val.start_time });
+                    values.push({ value: val.glucose, startDate: new Date(val.start_time) });
                   }
                   obj.values = values;
                   console.log(obj);
