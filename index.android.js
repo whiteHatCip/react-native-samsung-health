@@ -112,8 +112,9 @@ class RNSamsungHealth {
 
       results2 = [];
       for(var index in results) {
-          results2.push({date: index, value: results[index]});
+          results2.push({startDate: new Date(index), value: results[index]});
       }
+      console.log(results2);
       return results2;
   }
 
