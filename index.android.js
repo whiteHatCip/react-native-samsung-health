@@ -59,7 +59,6 @@ class RNSamsungHealth {
     console.log("getBloodGlucose");
 
     let startDate = options.startDate != undefined ? Date.parse(options.startDate) : (new Date()).setHours(0,0,0,0);
-    let endDate = options.endDate != undefined ? Date.parse(options.endDate) : (new Date()).valueOf();
     let mergeData = options.mergeData != undefined ? options.mergeData : true;
 
     samsungHealth.readBloodGlucose(startDate,
@@ -93,7 +92,6 @@ class RNSamsungHealth {
     console.log("getBloodPressure");
 
     let startDate = options.startDate != undefined ? Date.parse(options.startDate) : (new Date()).setHours(0,0,0,0);
-    let endDate = options.endDate != undefined ? Date.parse(options.endDate) : (new Date()).valueOf();
     let mergeData = options.mergeData != undefined ? options.mergeData : true;
 
     samsungHealth.readBloodPressure(startDate,
