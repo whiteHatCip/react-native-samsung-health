@@ -62,7 +62,7 @@ class RNSamsungHealth {
     let endDate = options.endDate != undefined ? Date.parse(options.endDate) : (new Date()).valueOf();
     let mergeData = options.mergeData != undefined ? options.mergeData : true;
 
-    samsungHealth.readBloodGlucose(startDate, endDate,
+    samsungHealth.readBloodGlucose(startDate,
       (msg) => { callback(msg, false); },
       (res) => {
           console.log(res);
@@ -84,6 +84,45 @@ class RNSamsungHealth {
               callback(false, resData);
           } else {
               callback("There is no any blood glucose data for this period", false);
+          }
+      }
+    );
+  }
+
+  getBloodPressureSamples(options, callback) {
+    console.log("getBloodPressure");
+
+    let startDate = options.startDate != undefined ? Date.parse(options.startDate) : (new Date()).setHours(0,0,0,0);
+    let endDate = options.endDate != undefined ? Date.parse(options.endDate) : (new Date()).valueOf();
+    let mergeData = options.mergeData != undefined ? options.mergeData : true;
+
+    samsungHealth.readBloodPressure(startDate,
+      (msg) => { callback(msg, false); },
+      (res) => {
+          console.log(res);
+          if (res.length>0) {
+              var resData = res.map((dev) =>  {
+                  var obj = {};
+                  var values = [];
+                  console.log(dev);
+                  obj.source = dev.source.name;
+                  obj.sourceDetail = dev.source;
+                  for(var val of dev.bloodPressure) {
+                    values.push({
+                        bloodPressureSystolicValue: val.systolic,
+                        bloodPressureDiastolicValue: val.diastolic,
+                        pulse: val.pulse,
+                        startDate: new Date(val.start_time)
+                    });
+                  }
+                  obj.values = values;
+                  console.log(obj);
+                  return obj;
+                }, this);
+                console.log("risultato della lettura della pressione");
+              callback(false, resData);
+          } else {
+              callback("There is no any blood pressure data for this period", false);
           }
       }
     );

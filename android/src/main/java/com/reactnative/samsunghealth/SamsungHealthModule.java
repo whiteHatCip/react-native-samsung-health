@@ -199,9 +199,9 @@ public class SamsungHealthModule extends ReactContextBaseJavaModule implements
         }
     }
 
-    // Read the today's heart rate on demand
+    // Read the today's blood glucose on demand
     @ReactMethod
-    public void readBloodGlucose(double startDate, double endDate, Callback error, Callback success) {
+    public void readBloodGlucose(double startDate, Callback error, Callback success) {
         HealthDataResolver resolver = new HealthDataResolver(mStore, null);
 
         Log.d(REACT_MODULE, "startDate:" + Long.toString((long)startDate));
@@ -222,6 +222,34 @@ public class SamsungHealthModule extends ReactContextBaseJavaModule implements
             Log.e(REACT_MODULE, e.getClass().getName() + " - " + e.getMessage());
             Log.e(REACT_MODULE, "Getting blood glucose fails.");
             error.invoke("Getting blood glucose fails.");
+        }
+    }
+
+    // Read the today's blood pressure on demand
+    @ReactMethod
+    public void readBloodPressure(double startDate, Callback error, Callback success) {
+        HealthDataResolver resolver = new HealthDataResolver(mStore, null);
+
+        Log.d(REACT_MODULE, "startDate:" + Long.toString((long)startDate));
+
+        HealthDataResolver.ReadRequest request = new ReadRequest.Builder()
+
+                .setDataType(HealthConstants.BloodPressure.HEALTH_DATA_TYPE) //  "com.samsung.health.blood_pressure"
+                .setProperties(new String[]{
+                        HealthConstants.BloodPressure.SYSTOLIC,       // Systolic value
+                        HealthConstants.BloodPressure.DIASTOLIC,  // Diastolic value
+                        HealthConstants.BloodPressure.PULSE,      // pulse
+                        HealthConstants.BloodPressure.START_TIME, // start_time
+                        HealthConstants.BloodPressure.DEVICE_UUID  // Common: "deviceuuid"
+                })
+                .build();
+
+        try {
+            resolver.read(request).setResultListener(new BloodPressureResultListener(this, error, success));
+        } catch (Exception e) {
+            Log.e(REACT_MODULE, e.getClass().getName() + " - " + e.getMessage());
+            Log.e(REACT_MODULE, "Getting blood pressure fails.");
+            error.invoke("Getting blood pressure fails.");
         }
     }
 }
