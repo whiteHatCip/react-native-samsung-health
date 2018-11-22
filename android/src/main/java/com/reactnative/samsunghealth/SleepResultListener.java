@@ -115,6 +115,11 @@ public class SleepResultListener implements
                         if (col > -1) {
                             map.putDouble(HealthConstants.Sleep.END_TIME, (double) c.getLong(col));
                         }
+
+                        col = c.getColumnIndex(HealthConstants.Sleep.TIME_OFFSET);
+                        if (col > -1) {
+                            map.putDouble(HealthConstants.Sleep.TIME_OFFSET, (double) c.getLong(col));
+                        }
                         
                         resultSet.pushMap(map);
                         r++;

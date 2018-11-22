@@ -147,7 +147,7 @@ public class HeartRateResultListener implements
         for(Map.Entry<String, WritableArray> entry: devices.entrySet()) {
             WritableMap map = Arguments.createMap();
             map.putMap("source", getDeviceInfo(entry.getKey()));
-            map.putArray("heart rate", entry.getValue());
+            map.putArray("heartRate", entry.getValue());
             results.pushMap(map);
         }
 

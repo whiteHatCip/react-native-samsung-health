@@ -19,10 +19,12 @@ import com.facebook.react.bridge.LifecycleEventListener;
 
 import com.samsung.android.sdk.healthdata.HealthConnectionErrorResult;
 import com.samsung.android.sdk.healthdata.HealthConstants;
+import com.samsung.android.sdk.healthdata.HealthData;
 import com.samsung.android.sdk.healthdata.HealthDataObserver;
 import com.samsung.android.sdk.healthdata.HealthDataResolver;
 import com.samsung.android.sdk.healthdata.HealthDataResolver.Filter;
 import com.samsung.android.sdk.healthdata.HealthDataResolver.ReadRequest;
+import com.samsung.android.sdk.healthdata.HealthDataResolver.InsertRequest;
 import com.samsung.android.sdk.healthdata.HealthDataResolver.ReadResult;
 import com.samsung.android.sdk.healthdata.HealthDataService;
 import com.samsung.android.sdk.healthdata.HealthDataStore;
@@ -39,6 +41,7 @@ import org.json.JSONException;
 
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -255,7 +258,37 @@ public class SamsungHealthModule extends ReactContextBaseJavaModule implements
 
     // -------------------------------------
 
-    // Read the today's blood pressure on demand
+    // write heart rate new value on demand
+    @ReactMethod
+    public void writeHeartRate(float heartRate, Callback error, Callback success) {
+        HealthDataResolver resolver = new HealthDataResolver(mStore, null);
+
+        Log.d(REACT_MODULE, "heart rate:" + Long.toString((int)heartRate));
+
+        HealthData data = new HealthData();
+        data.putInt(HealthConstants.HeartRate.HEART_BEAT_COUNT, (int) heartRate * 60);
+        data.putFloat(HealthConstants.HeartRate.HEART_RATE, heartRate);
+        data.putLong(HealthConstants.HeartRate.START_TIME, new Date().getTime());
+        data.putLong(HealthConstants.HeartRate.END_TIME, new Date().getTime());
+        data.putLong(HealthConstants.HeartRate.TIME_OFFSET, 3600000);
+
+        data.setSourceDevice(new HealthDeviceManager(mStore).getLocalDevice().getUuid());
+
+        HealthDataResolver.InsertRequest request = new InsertRequest.Builder()
+                .setDataType(HealthConstants.HeartRate.HEALTH_DATA_TYPE)
+                .build();
+        request.addHealthData(data);
+
+        try {
+            resolver.insert(request);
+        } catch (Exception e) {
+            Log.e(REACT_MODULE, e.getClass().getName() + " - " + e.getMessage());
+            Log.e(REACT_MODULE, "Write heart rate fails.");
+            error.invoke("Write heart rate fails.");
+        }
+    }
+
+    // Read the today's heart rate on demand
     @ReactMethod
     public void readHeartRate(double startDate, Callback error, Callback success) {
         HealthDataResolver resolver = new HealthDataResolver(mStore, null);
@@ -264,7 +297,7 @@ public class SamsungHealthModule extends ReactContextBaseJavaModule implements
 
         HealthDataResolver.ReadRequest request = new ReadRequest.Builder()
 
-                .setDataType(HealthConstants.HeartRate.HEALTH_DATA_TYPE) //  "com.samsung.health.blood_pressure"
+                .setDataType(HealthConstants.HeartRate.HEALTH_DATA_TYPE) //  "com.samsung.health.heart_rate"
                 .setProperties(new String[]{
                         HealthConstants.HeartRate.START_TIME,
                         HealthConstants.HeartRate.HEART_RATE,
@@ -282,7 +315,7 @@ public class SamsungHealthModule extends ReactContextBaseJavaModule implements
         }
     }
 
-    // Read the today's blood pressure on demand
+    // Read the today's sleep on demand
     @ReactMethod
     public void readSleep(double startDate, Callback error, Callback success) {
         HealthDataResolver resolver = new HealthDataResolver(mStore, null);
@@ -291,8 +324,9 @@ public class SamsungHealthModule extends ReactContextBaseJavaModule implements
 
         HealthDataResolver.ReadRequest request = new ReadRequest.Builder()
 
-                .setDataType(HealthConstants.Sleep.HEALTH_DATA_TYPE) //  "com.samsung.health.blood_pressure"
+                .setDataType(HealthConstants.Sleep.HEALTH_DATA_TYPE) //  "com.samsung.health.sleep"
                 .setProperties(new String[]{
+                        HealthConstants.Sleep.TIME_OFFSET,  // time_offset
                         HealthConstants.Sleep.START_TIME,       // Start time
                         HealthConstants.Sleep.END_TIME,  // End time
                         HealthConstants.Sleep.DEVICE_UUID  // Common: "deviceuuid"
@@ -308,7 +342,7 @@ public class SamsungHealthModule extends ReactContextBaseJavaModule implements
         }
     }
 
-    // Read the today's blood pressure on demand
+    // Read the today's weight on demand
     @ReactMethod
     public void readWeight(double startDate, Callback error, Callback success) {
         HealthDataResolver resolver = new HealthDataResolver(mStore, null);
@@ -317,7 +351,7 @@ public class SamsungHealthModule extends ReactContextBaseJavaModule implements
 
         HealthDataResolver.ReadRequest request = new ReadRequest.Builder()
 
-                .setDataType(HealthConstants.Weight.HEALTH_DATA_TYPE) //  "com.samsung.health.blood_pressure"
+                .setDataType(HealthConstants.Weight.HEALTH_DATA_TYPE) //  "com.samsung.health.weight"
                 .setProperties(new String[]{
                         HealthConstants.Weight.WEIGHT,       // Weight value
                         HealthConstants.Weight.FAT_FREE_MASS,  // Fat free mass value
@@ -335,7 +369,7 @@ public class SamsungHealthModule extends ReactContextBaseJavaModule implements
         }
     }
 
-    // Read the today's blood pressure on demand
+    // Read the today's oxygen saturation on demand
     @ReactMethod
     public void readOxygenSaturation(double startDate, Callback error, Callback success) {
         HealthDataResolver resolver = new HealthDataResolver(mStore, null);
@@ -344,7 +378,7 @@ public class SamsungHealthModule extends ReactContextBaseJavaModule implements
 
         HealthDataResolver.ReadRequest request = new ReadRequest.Builder()
 
-                .setDataType(HealthConstants.OxygenSaturation.HEALTH_DATA_TYPE) //  "com.samsung.health.blood_pressure"
+                .setDataType(HealthConstants.OxygenSaturation.HEALTH_DATA_TYPE) //  "com.samsung.health.oxygen_saturation"
                 .setProperties(new String[]{
                         HealthConstants.OxygenSaturation.SPO2,       // SPO2 value
                         HealthConstants.OxygenSaturation.HEART_RATE,  // Heart rate value

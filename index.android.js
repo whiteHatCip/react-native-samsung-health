@@ -88,6 +88,72 @@ class RNSamsungHealth {
     );
   }
 
+  getHeartRateSamples(options, callback) {
+    console.log("getHeartRate");
+
+    let startDate = options.startDate != undefined ? Date.parse(options.startDate) : (new Date()).setHours(0,0,0,0);
+    let mergeData = options.mergeData != undefined ? options.mergeData : true;
+
+    samsungHealth.readHeartRate(startDate,
+      (msg) => { callback(msg, false); },
+      (res) => {
+          console.log(res);
+          if (res.length>0) {
+              var resData = res.map((dev) =>  {
+                  var obj = {};
+                  var values = [];
+                  console.log(dev);
+                  obj.source = dev.source.name;
+                  obj.sourceDetail = dev.source;
+                  for(var val of dev.heartRate) {
+                    values.push({ value: val.heart_rate, startDate: new Date(val.start_time) });
+                  }
+                  obj.values = values;
+                  console.log(obj);
+                  return obj;
+                }, this);
+                console.log("risultato della lettura della glicemia");
+              callback(false, resData);
+          } else {
+              callback("There is no any blood glucose data for this period", false);
+          }
+      }
+    );
+  }
+
+  putHeartRate(options, callback) {
+    console.log("putHeartRate");
+
+    let startDate = options.startDate != undefined ? Date.parse(options.startDate) : (new Date()).setHours(0,0,0,0);
+    let mergeData = options.mergeData != undefined ? options.mergeData : true;
+
+    samsungHealth.writeHeartRate(54,
+      (msg) => { callback(msg, false); },
+      (res) => {
+          console.log(res);
+          if (res.length>0) {
+              var resData = res.map((dev) =>  {
+                  var obj = {};
+                  var values = [];
+                  console.log(dev);
+                  obj.source = dev.source.name;
+                  obj.sourceDetail = dev.source;
+                  for(var val of dev.bloodGlucose) {
+                    values.push({ value: val.glucose, startDate: new Date(val.start_time) });
+                  }
+                  obj.values = values;
+                  console.log(obj);
+                  return obj;
+                }, this);
+                console.log("risultato della lettura della glicemia");
+              callback(false, resData);
+          } else {
+              callback("There is no any blood glucose data for this period", false);
+          }
+      }
+    );
+  }
+
   getBloodPressureSamples(options, callback) {
     console.log("getBloodPressure");
 
@@ -158,6 +224,43 @@ class RNSamsungHealth {
               callback(false, resData);
           } else {
               callback("There is no any weight data for this period", false);
+          }
+      }
+    );
+  }
+
+  getSleepSamples(options, callback) {
+    console.log("getSleep");
+
+    let startDate = options.startDate != undefined ? Date.parse(options.startDate) : (new Date()).setHours(0,0,0,0);
+    let mergeData = options.mergeData != undefined ? options.mergeData : true;
+
+    samsungHealth.readSleep(startDate,
+      (msg) => { callback(msg, false); },
+      (res) => {
+          console.log(res);
+          if (res.length>0) {
+              var resData = res.map((dev) =>  {
+                  var obj = {};
+                  var values = [];
+                  console.log(dev);
+                  obj.source = dev.source.name;
+                  obj.sourceDetail = dev.source;
+                  for(var val of dev.sleep) {
+                    values.push({
+                        startDate: new Date(val.start_time).toISOString(),
+                        endDate: new Date(val.end_time).toISOString(),
+                        value: 'ASLEEP',
+                    });
+                  }
+                  obj.values = values;
+                  console.log(obj);
+                  return obj;
+                }, this);
+                console.log("risultato della lettura del sonno");
+              callback(false, resData);
+          } else {
+              callback("There is no any sleep data for this period", false);
           }
       }
     );

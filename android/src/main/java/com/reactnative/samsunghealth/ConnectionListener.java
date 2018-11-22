@@ -96,7 +96,7 @@ public class ConnectionListener implements
                 );
             } else {
                 // Get the current step count and display it
-                Log.d(REACT_MODULE, "Get the data!");
+                Log.d(REACT_MODULE, "Go get the data!");
                 mSuccessCallback.invoke(true);
             }
         } catch (Exception e) {
