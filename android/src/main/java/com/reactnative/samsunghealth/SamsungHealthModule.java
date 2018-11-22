@@ -281,10 +281,41 @@ public class SamsungHealthModule extends ReactContextBaseJavaModule implements
 
         try {
             resolver.insert(request);
+            success.invoke("Heart rate data inserted successfully");
         } catch (Exception e) {
             Log.e(REACT_MODULE, e.getClass().getName() + " - " + e.getMessage());
             Log.e(REACT_MODULE, "Write heart rate fails.");
             error.invoke("Write heart rate fails.");
+        }
+    }
+
+    // write oxygen saturation new value on demand
+    @ReactMethod
+    public void writeOxygenSaturation(float oxygenSaturation, Callback error, Callback success) {
+        HealthDataResolver resolver = new HealthDataResolver(mStore, null);
+
+        Log.d(REACT_MODULE, "oxygen saturation:" + Float.toString(oxygenSaturation));
+
+        HealthData data = new HealthData();
+        data.putFloat(HealthConstants.OxygenSaturation.SPO2, oxygenSaturation);
+        data.putLong(HealthConstants.OxygenSaturation.START_TIME, new Date().getTime());
+        data.putLong(HealthConstants.OxygenSaturation.END_TIME, new Date().getTime());
+        data.putLong(HealthConstants.OxygenSaturation.TIME_OFFSET, 3600000);
+
+        data.setSourceDevice(new HealthDeviceManager(mStore).getLocalDevice().getUuid());
+
+        HealthDataResolver.InsertRequest request = new InsertRequest.Builder()
+                .setDataType(HealthConstants.OxygenSaturation.HEALTH_DATA_TYPE)
+                .build();
+        request.addHealthData(data);
+
+        try {
+            resolver.insert(request);
+            success.invoke("Oxygen saturation data inserted successfully");
+        } catch (Exception e) {
+            Log.e(REACT_MODULE, e.getClass().getName() + " - " + e.getMessage());
+            Log.e(REACT_MODULE, "Write oxygen saturation fails.");
+            error.invoke("Write oxygen saturation fails.");
         }
     }
 

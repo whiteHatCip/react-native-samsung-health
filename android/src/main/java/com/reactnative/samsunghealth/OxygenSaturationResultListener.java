@@ -120,7 +120,7 @@ public class OxygenSaturationResultListener implements
                         r++;
                     }
 
-                    Log.d(REACT_MODULE, "Found rows " + Long.toString(r));
+                    Log.d(REACT_MODULE, "Oxygen Saturation: Found rows " + Long.toString(r));
                 } else {
                     Log.d(REACT_MODULE, "The cursor count is zero.");
                 }
@@ -142,12 +142,11 @@ public class OxygenSaturationResultListener implements
         for(Map.Entry<String, WritableArray> entry: devices.entrySet()) {
             WritableMap map = Arguments.createMap();
             map.putMap("source", getDeviceInfo(entry.getKey()));
-            map.putArray("weight", entry.getValue());
+            map.putArray("oxygenSaturation", entry.getValue());
             results.pushMap(map);
         }
 
-        Log.d(REACT_MODULE, "Weight " +
-                "Results");
+        Log.d(REACT_MODULE, "Oxygen saturation " + "Results");
         mSuccessCallback.invoke(results);
     }
 }

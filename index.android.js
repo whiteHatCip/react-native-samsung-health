@@ -88,6 +88,55 @@ class RNSamsungHealth {
     );
   }
 
+  getOxygenSaturationSamples(options, callback) {
+    console.log("getOxygenSaturation");
+
+    let startDate = options.startDate != undefined ? Date.parse(options.startDate) : (new Date()).setHours(0,0,0,0);
+    let mergeData = options.mergeData != undefined ? options.mergeData : true;
+
+    samsungHealth.readOxygenSaturation(startDate,
+      (msg) => { callback(msg, false); },
+      (res) => {
+          console.log(res);
+          if (res.length>0) {
+              var resData = res.map((dev) =>  {
+                  var obj = {};
+                  var values = [];
+                  console.log(dev);
+                  obj.source = dev.source.name;
+                  obj.sourceDetail = dev.source;
+                  for(var val of dev.oxygenSaturation) {
+                    values.push({
+                        value: val.spo2,
+                        date: new Date(val.start_time),
+                        heartRate: val.heart_rate,
+                    });
+                  }
+                  obj.values = values;
+                  console.log(obj);
+                  return obj;
+                }, this);
+                console.log("risultato della lettura della saturazione dell'ossigeno");
+              callback(false, resData);
+          } else {
+              callback("There is no any oxygen saturation data for this period", false);
+          }
+      }
+    );
+  }
+
+  putOxygenSaturation(value, callback) {
+    console.log("putOxygenSaturation");
+
+    samsungHealth.writeOxygenSaturation(value,
+      (msg) => { callback(msg, false); },
+      (res) => {
+        console.log(res);
+        callback();
+      }
+    );
+  }
+
   getHeartRateSamples(options, callback) {
     console.log("getHeartRate");
 
@@ -121,35 +170,14 @@ class RNSamsungHealth {
     );
   }
 
-  putHeartRate(options, callback) {
+  putHeartRate(value, callback) {
     console.log("putHeartRate");
 
-    let startDate = options.startDate != undefined ? Date.parse(options.startDate) : (new Date()).setHours(0,0,0,0);
-    let mergeData = options.mergeData != undefined ? options.mergeData : true;
-
-    samsungHealth.writeHeartRate(54,
+    samsungHealth.writeHeartRate(value,
       (msg) => { callback(msg, false); },
       (res) => {
-          console.log(res);
-          if (res.length>0) {
-              var resData = res.map((dev) =>  {
-                  var obj = {};
-                  var values = [];
-                  console.log(dev);
-                  obj.source = dev.source.name;
-                  obj.sourceDetail = dev.source;
-                  for(var val of dev.bloodGlucose) {
-                    values.push({ value: val.glucose, startDate: new Date(val.start_time) });
-                  }
-                  obj.values = values;
-                  console.log(obj);
-                  return obj;
-                }, this);
-                console.log("risultato della lettura della glicemia");
-              callback(false, resData);
-          } else {
-              callback("There is no any blood glucose data for this period", false);
-          }
+        console.log(res);
+        callback();
       }
     );
   }
