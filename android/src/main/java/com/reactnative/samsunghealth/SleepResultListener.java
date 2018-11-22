@@ -125,7 +125,7 @@ public class SleepResultListener implements
                         r++;
                     }
 
-                    Log.d(REACT_MODULE, "Found rows " + Long.toString(r));
+                    Log.d(REACT_MODULE, "Sleep: Found rows " + Long.toString(r));
                 } else {
                     Log.d(REACT_MODULE, "The cursor count is zero.");
                 }
@@ -144,6 +144,7 @@ public class SleepResultListener implements
         }
 
         WritableArray results = Arguments.createArray();
+        Log.d(REACT_MODULE, "values: " + results);
         for(Map.Entry<String, WritableArray> entry: devices.entrySet()) {
             WritableMap map = Arguments.createMap();
             map.putMap("source", getDeviceInfo(entry.getKey()));

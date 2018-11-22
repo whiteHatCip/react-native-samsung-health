@@ -108,7 +108,7 @@ class RNSamsungHealth {
                   for(var val of dev.oxygenSaturation) {
                     values.push({
                         value: val.spo2,
-                        date: new Date(val.start_time),
+                        startDate: new Date(val.start_time),
                         heartRate: val.heart_rate,
                     });
                   }

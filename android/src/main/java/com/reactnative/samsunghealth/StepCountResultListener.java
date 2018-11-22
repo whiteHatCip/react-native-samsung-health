@@ -166,7 +166,7 @@ public class StepCountResultListener implements
                     r++;
                 }
 
-                Log.d(REACT_MODULE, "Found rows " + Long.toString(r));
+                Log.d(REACT_MODULE, "Step Count: Found rows " + Long.toString(r));
             } else {
                 Log.d(REACT_MODULE, "The cursor is null.");
             }

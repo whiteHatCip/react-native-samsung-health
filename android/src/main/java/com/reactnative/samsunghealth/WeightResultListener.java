@@ -113,19 +113,19 @@ public class WeightResultListener implements
 
                         col = c.getColumnIndex(HealthConstants.Weight.WEIGHT);
                         if (col > -1) {
-                            map.putDouble(HealthConstants.Weight.WEIGHT, (double) c.getLong(col));
+                            map.putDouble(HealthConstants.Weight.WEIGHT, (double) c.getDouble(col));
                         }
 
                         col = c.getColumnIndex(HealthConstants.Weight.FAT_FREE_MASS);
                         if (col > -1) {
-                            map.putDouble(HealthConstants.Weight.FAT_FREE_MASS, (double) c.getLong(col));
+                            map.putDouble(HealthConstants.Weight.FAT_FREE_MASS, (double) c.getDouble(col));
                         }
 
                         resultSet.pushMap(map);
                         r++;
                     }
 
-                    Log.d(REACT_MODULE, "Found rows " + Long.toString(r));
+                    Log.d(REACT_MODULE, "Weight: Found rows " + Long.toString(r));
                 } else {
                     Log.d(REACT_MODULE, "The cursor count is zero.");
                 }

@@ -113,7 +113,7 @@ public class HeartRateResultListener implements
 
                         col = c.getColumnIndex(HealthConstants.HeartRate.HEART_RATE);
                         if (col > -1) {
-                            map.putDouble(HealthConstants.HeartRate.HEART_RATE, (double) c.getLong(col));
+                            map.putDouble(HealthConstants.HeartRate.HEART_RATE, (double) c.getFloat(col));
                         }
 
                         col = c.getColumnIndex(HealthConstants.HeartRate.HEART_BEAT_COUNT);
@@ -125,7 +125,7 @@ public class HeartRateResultListener implements
                         r++;
                     }
 
-                    Log.d(REACT_MODULE, "Found rows " + Long.toString(r));
+                    Log.d(REACT_MODULE, "Heart Rate: Found rows " + Long.toString(r));
                 } else {
                     Log.d(REACT_MODULE, "The cursor count is zero.");
                 }
