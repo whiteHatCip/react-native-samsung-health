@@ -427,6 +427,37 @@ public class SamsungHealthModule extends ReactContextBaseJavaModule implements
         }
     }
 
+    // Read the today's exercise on demand
+    @ReactMethod
+    public void readExercise(double startDate, Callback error, Callback success) {
+        HealthDataResolver resolver = new HealthDataResolver(mStore, null);
+
+        Log.d(REACT_MODULE, "startDate:" + Long.toString((long)startDate));
+
+        HealthDataResolver.ReadRequest request = new ReadRequest.Builder()
+
+                .setDataType(HealthConstants.Exercise.HEALTH_DATA_TYPE) //  "com.samsung.health.oxygen_saturation"
+                .setProperties(new String[]{
+                        HealthConstants.Exercise.CALORIE,       // calorie
+                        HealthConstants.Exercise.DISTANCE,  // distance
+                        HealthConstants.Exercise.DURATION, // duration
+                        HealthConstants.Exercise.EXERCISE_TYPE, // exercise_type
+                        HealthConstants.Exercise.EXERCISE_CUSTOM_TYPE, // exercise_custom_type
+                        HealthConstants.Exercise.COUNT_TYPE, // count_type
+                        HealthConstants.Exercise.COUNT, // count
+                        HealthConstants.Exercise.DEVICE_UUID  // Common: "deviceuuid"
+                })
+                .build();
+
+        try {
+            resolver.read(request).setResultListener(new ExerciseResultListener(this, error, success));
+        } catch (Exception e) {
+            Log.e(REACT_MODULE, e.getClass().getName() + " - " + e.getMessage());
+            Log.e(REACT_MODULE, "Getting exercise fails.");
+            error.invoke("Getting exercise fails.");
+        }
+    }
+
     // -------------------------------------
 }
 
