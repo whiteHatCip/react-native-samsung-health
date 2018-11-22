@@ -126,6 +126,43 @@ class RNSamsungHealth {
     );
   }
 
+  getWeightSamples(options, callback) {
+    console.log("getWeight");
+
+    let startDate = options.startDate != undefined ? Date.parse(options.startDate) : (new Date()).setHours(0,0,0,0);
+    let mergeData = options.mergeData != undefined ? options.mergeData : true;
+
+    samsungHealth.readWeight(startDate,
+      (msg) => { callback(msg, false); },
+      (res) => {
+          console.log(res);
+          if (res.length>0) {
+              var resData = res.map((dev) =>  {
+                  var obj = {};
+                  var values = [];
+                  console.log(dev);
+                  obj.source = dev.source.name;
+                  obj.sourceDetail = dev.source;
+                  for(var val of dev.weight) {
+                    values.push({
+                        value: val.weight * 1000,
+                        leanBodyMass: val.fat_free_mass,
+                        startDate: new Date(val.start_time)
+                    });
+                  }
+                  obj.values = values;
+                  console.log(obj);
+                  return obj;
+                }, this);
+                console.log("risultato della lettura del peso");
+              callback(false, resData);
+          } else {
+              callback("There is no any weight data for this period", false);
+          }
+      }
+    );
+  }
+
   usubscribeListeners() {
     DeviceEventEmitter.removeAllListeners();
   }

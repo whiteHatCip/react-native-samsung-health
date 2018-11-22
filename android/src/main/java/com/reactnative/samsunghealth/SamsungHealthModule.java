@@ -252,6 +252,117 @@ public class SamsungHealthModule extends ReactContextBaseJavaModule implements
             error.invoke("Getting blood pressure fails.");
         }
     }
+
+    // -------------------------------------
+
+    // Read the today's blood pressure on demand
+    @ReactMethod
+    public void readHeartRate(double startDate, Callback error, Callback success) {
+        HealthDataResolver resolver = new HealthDataResolver(mStore, null);
+
+        Log.d(REACT_MODULE, "startDate:" + Long.toString((long)startDate));
+
+        HealthDataResolver.ReadRequest request = new ReadRequest.Builder()
+
+                .setDataType(HealthConstants.HeartRate.HEALTH_DATA_TYPE) //  "com.samsung.health.blood_pressure"
+                .setProperties(new String[]{
+                        HealthConstants.HeartRate.START_TIME,
+                        HealthConstants.HeartRate.HEART_RATE,
+                        HealthConstants.HeartRate.HEART_BEAT_COUNT,
+                        HealthConstants.HeartRate.DEVICE_UUID  // Common: "deviceuuid"
+                })
+                .build();
+
+        try {
+            resolver.read(request).setResultListener(new HeartRateResultListener(this, error, success));
+        } catch (Exception e) {
+            Log.e(REACT_MODULE, e.getClass().getName() + " - " + e.getMessage());
+            Log.e(REACT_MODULE, "Getting heart rate fails.");
+            error.invoke("Getting heart rate fails.");
+        }
+    }
+
+    // Read the today's blood pressure on demand
+    @ReactMethod
+    public void readSleep(double startDate, Callback error, Callback success) {
+        HealthDataResolver resolver = new HealthDataResolver(mStore, null);
+
+        Log.d(REACT_MODULE, "startDate:" + Long.toString((long)startDate));
+
+        HealthDataResolver.ReadRequest request = new ReadRequest.Builder()
+
+                .setDataType(HealthConstants.Sleep.HEALTH_DATA_TYPE) //  "com.samsung.health.blood_pressure"
+                .setProperties(new String[]{
+                        HealthConstants.Sleep.START_TIME,       // Start time
+                        HealthConstants.Sleep.END_TIME,  // End time
+                        HealthConstants.Sleep.DEVICE_UUID  // Common: "deviceuuid"
+                })
+                .build();
+
+        try {
+            resolver.read(request).setResultListener(new SleepResultListener(this, error, success));
+        } catch (Exception e) {
+            Log.e(REACT_MODULE, e.getClass().getName() + " - " + e.getMessage());
+            Log.e(REACT_MODULE, "Getting sleep fails.");
+            error.invoke("Getting sleep fails.");
+        }
+    }
+
+    // Read the today's blood pressure on demand
+    @ReactMethod
+    public void readWeight(double startDate, Callback error, Callback success) {
+        HealthDataResolver resolver = new HealthDataResolver(mStore, null);
+
+        Log.d(REACT_MODULE, "startDate:" + Long.toString((long)startDate));
+
+        HealthDataResolver.ReadRequest request = new ReadRequest.Builder()
+
+                .setDataType(HealthConstants.Weight.HEALTH_DATA_TYPE) //  "com.samsung.health.blood_pressure"
+                .setProperties(new String[]{
+                        HealthConstants.Weight.WEIGHT,       // Weight value
+                        HealthConstants.Weight.FAT_FREE_MASS,  // Fat free mass value
+                        HealthConstants.Weight.START_TIME, // start_time
+                        HealthConstants.Weight.DEVICE_UUID  // Common: "deviceuuid"
+                })
+                .build();
+
+        try {
+            resolver.read(request).setResultListener(new WeightResultListener(this, error, success));
+        } catch (Exception e) {
+            Log.e(REACT_MODULE, e.getClass().getName() + " - " + e.getMessage());
+            Log.e(REACT_MODULE, "Getting weight fails.");
+            error.invoke("Getting weight fails.");
+        }
+    }
+
+    // Read the today's blood pressure on demand
+    @ReactMethod
+    public void readOxygenSaturation(double startDate, Callback error, Callback success) {
+        HealthDataResolver resolver = new HealthDataResolver(mStore, null);
+
+        Log.d(REACT_MODULE, "startDate:" + Long.toString((long)startDate));
+
+        HealthDataResolver.ReadRequest request = new ReadRequest.Builder()
+
+                .setDataType(HealthConstants.OxygenSaturation.HEALTH_DATA_TYPE) //  "com.samsung.health.blood_pressure"
+                .setProperties(new String[]{
+                        HealthConstants.OxygenSaturation.SPO2,       // SPO2 value
+                        HealthConstants.OxygenSaturation.HEART_RATE,  // Heart rate value
+                        HealthConstants.OxygenSaturation.START_TIME, // start_time
+                        HealthConstants.OxygenSaturation.DEVICE_UUID  // Common: "deviceuuid"
+                })
+                .build();
+
+        try {
+            resolver.read(request).setResultListener(new OxygenSaturationResultListener(this, error, success));
+        } catch (Exception e) {
+            Log.e(REACT_MODULE, e.getClass().getName() + " - " + e.getMessage());
+            Log.e(REACT_MODULE, "Getting oxygen saturation fails.");
+            error.invoke("Getting oxygen saturation fails.");
+        }
+    }
+
+    // -------------------------------------
 }
 
 /* vim :set ts=4 sw=4 sts=4 et : */
