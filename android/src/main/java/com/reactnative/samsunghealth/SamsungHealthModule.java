@@ -445,6 +445,7 @@ public class SamsungHealthModule extends ReactContextBaseJavaModule implements
                         HealthConstants.Exercise.EXERCISE_CUSTOM_TYPE, // exercise_custom_type
                         HealthConstants.Exercise.COUNT_TYPE, // count_type
                         HealthConstants.Exercise.COUNT, // count
+                        HealthConstants.Exercise.START_TIME, // start_time
                         HealthConstants.Exercise.DEVICE_UUID  // Common: "deviceuuid"
                 })
                 .build();

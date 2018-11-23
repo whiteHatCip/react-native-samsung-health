@@ -127,6 +127,44 @@ class RNSamsungHealth {
       });
   }
 
+  getActivitySamples(options, callback) {
+    console.log('getActivity');
+
+    const startDate = options.startDate !== undefined
+      ? Date.parse(options.startDate) : (new Date()).setHours(0, 0, 0, 0);
+
+    samsungHealth.readExercise(startDate,
+      (msg) => { callback(msg, false); },
+      (res) => {
+        console.log(res);
+        if (res.length > 0) {
+          const resData = res.map((dev) => {
+            const obj = {};
+            console.log(dev);
+            obj.source = dev.source.name;
+            obj.sourceDetail = dev.source;
+            const values = dev.exercise.map(val => ({
+              startDate: new Date(val.start_time),
+              calorie: val.calorie,
+              distance: val.distance,
+              duration: val.duration,
+              exerciseType: val.exercise_type,
+              exerciseCustomType: val.exercise_custom_type,
+              count_type: val.count_type,
+              count: val.count,
+            }));
+            obj.values = values;
+            console.log(obj);
+            return obj;
+          }, this);
+          console.log('risultato della lettura delle activity');
+          callback(false, resData);
+        } else {
+          callback('There is no any activity data for this period', false);
+        }
+      });
+  }
+
   getHeartRateSamples(options, callback) {
     console.log('getHeartRate');
 
